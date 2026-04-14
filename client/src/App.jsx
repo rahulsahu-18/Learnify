@@ -6,6 +6,11 @@ import HeroSection from "./pages/students/HeroSection";
 import Courses from "./pages/students/Courses";
 import Profile from "./pages/students/Profile";
 import MyLearning from "./pages/students/Mylearning";
+import Dashboard from "./pages/admin/courses/Dashboard";
+import Sidebar from "./pages/admin/Sidebar";
+import CourseTable from "./pages/admin/courses/CourseTable";
+import AddCourse from "./pages/admin/courses/AddCourses";
+import EditCourse from "./pages/admin/courses/EditCourse";
 
 const appRouter = createBrowserRouter([
   {
@@ -27,16 +32,34 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "profile",
-        element: (
-            <Profile />
-        ),
+        element: <Profile />,
       },
       {
         path: "my-learning",
-        element: (
-            <MyLearning />
-        ),
-      }
+        element: <MyLearning />,
+      },
+      {
+        path: "admin",
+        element: <Sidebar />,
+        children: [
+          {
+            path: "dashboard",
+            element: <Dashboard />,
+          },
+          {
+            path: "course",
+            element: <CourseTable />,
+          },
+          {
+            path: "course/create",
+            element: <AddCourse />,
+          },
+          {
+            path: "course/:courseId",
+            element: <EditCourse />,
+          },
+        ],
+      },
     ],
   },
 ]);
