@@ -1,7 +1,7 @@
 import express from 'express'
 import isAuth from '../middleware/isAuth.js';
 import upload from "../middleware/multer.js";
-import { createCourse, editCourse, getCourseById, getCreatorCourses, getPublishedCourse, togglePublishCourse } from '../controller/courseController.js';
+import { createCourse, createLecture, editCourse, editLecture, getCourseById, getCourseLecture, getCreatorCourses, getLectureById, getPublishedCourse, removeLecture, togglePublishCourse } from '../controller/courseController.js';
 
 const coursesRoute = express.Router();
 
@@ -11,5 +11,10 @@ coursesRoute.put('/:courseId',isAuth,upload.single("courseThumbnail"),editCourse
 coursesRoute.get('/:courseId',isAuth,getCourseById);
 coursesRoute.get('/published-courses',isAuth,getPublishedCourse);
 coursesRoute.patch('/:courseId',isAuth,togglePublishCourse);
+coursesRoute.post('/lecture/:courseId',isAuth,createLecture);
+coursesRoute.get('/lecture/:courseId',isAuth,getCourseLecture);
+coursesRoute.post('/lecture/:courseId/:lectureId',isAuth,editLecture);
+coursesRoute.delete('/lecture/:lectureId',isAuth,removeLecture);
+coursesRoute.get('/lecture/:lectureId',isAuth,getLectureById);
 
 export default coursesRoute;
