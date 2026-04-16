@@ -31,7 +31,7 @@ const coursesApi = createApi({
         method: "PUT",
         body: formData,
       }),
-      // invalidatesTags: ["Refetch_Creator_Course"],
+      invalidatesTags: ["Refetch_Creator_Course"],
     }),
 
     getCourseById: builder.query({
@@ -52,6 +52,46 @@ const coursesApi = createApi({
         method: "PATCH",
       }),
     }),
+    createLecture: builder.mutation({
+      query: ({ lectureTitle, courseId }) => ({
+        url: `/${courseId}/lecture`,
+        method: "POST",
+        body: { lectureTitle },
+      }),
+    }),
+    getCourseLecture: builder.query({
+      query: (courseId) => ({
+        url: `/${courseId}/lecture`,
+        method: "GET",
+      }),
+      providesTags: ["Refetch_Lecture"],
+    }),
+    editLecture: builder.mutation({
+      query: ({
+        lectureTitle,
+        videoInfo,
+        isPreviewFree,
+        courseId,
+        lectureId,
+      }) => ({
+        url: `/lecture/${courseId}/${lectureId}`,
+        method: "POST",
+        body: { lectureTitle, videoInfo, isPreviewFree },
+      }),
+    }),
+    removeLecture: builder.mutation({
+      query: (lectureId) => ({
+        url: `/lecture/${lectureId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Refetch_Lecture"],
+    }),
+    getLectureById: builder.query({
+      query: (lectureId) => ({
+        url: `/lecture/${lectureId}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -61,6 +101,11 @@ export const {
   useEditCourseMutation,
   useGetPublishedCourseQuery,
   useGetCourseByIdQuery,
-  usePublishCourseMutation
+  usePublishCourseMutation,
+  useCreateLectureMutation,
+  useEditLectureMutation,
+  useGetCourseLectureQuery,
+  useRemoveLectureMutation,
+  useGetLectureByIdQuery,
 } = coursesApi;
 export default coursesApi;

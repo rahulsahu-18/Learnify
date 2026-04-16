@@ -11,8 +11,8 @@ coursesRoute.put('/:courseId',isAuth,upload.single("courseThumbnail"),editCourse
 coursesRoute.get('/:courseId',isAuth,getCourseById);
 coursesRoute.get('/published-courses',isAuth,getPublishedCourse);
 coursesRoute.patch('/:courseId',isAuth,togglePublishCourse);
-coursesRoute.post('/lecture/:courseId',isAuth,createLecture);
-coursesRoute.get('/lecture/:courseId',isAuth,getCourseLecture);
+coursesRoute.post('/:courseId/lecture',isAuth,createLecture);
+coursesRoute.get('/:courseId/lecture',isAuth,getCourseLecture);
 coursesRoute.post('/lecture/:courseId/:lectureId',isAuth,editLecture);
 coursesRoute.delete('/lecture/:lectureId',isAuth,removeLecture);
 coursesRoute.get('/lecture/:lectureId',isAuth,getLectureById);

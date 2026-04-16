@@ -5,6 +5,7 @@ import cors from "cors";
 import connectDB from './utils/db.js';
 import userRouter from './routes/userRoutes.js';
 import coursesRoute from './routes/coursesRoutes.js'
+import mediaRouter from './routes/mediaRoute.js';
 
 dotenv.config({});
 
@@ -21,6 +22,7 @@ app.use(cors({
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/course",coursesRoute);
+app.use("/api/v1/media",mediaRouter);
 const PORT = process.env.PORT;
 
 app.listen(PORT,()=>{
