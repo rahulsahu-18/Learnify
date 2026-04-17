@@ -66,10 +66,11 @@ export const createCheckoutSession = async (req, res) => {
 };
 
 export const stripeWebhook = async (req, res) => {
+  console.log("WEBHOOK HIT 🔥");
   let event;
 
   try {
-    const payloadString = JSON.stringify(req.body, null, 2);
+       const payloadString = JSON.stringify(req.body, null, 2);
     const secret = process.env.WEBHOOK_ENDPOINT_SECRET;
 
     const header = stripe.webhooks.generateTestHeaderString({
@@ -78,18 +79,23 @@ export const stripeWebhook = async (req, res) => {
     });
 
     event = stripe.webhooks.constructEvent(payloadString, header, secret);
+
   } catch (error) {
     console.error("Webhook error:", error.message);
     return res.status(400).send(`Webhook error: ${error.message}`);
   }
 
+  // Handle event
   if (event.type === "checkout.session.completed") {
     console.log("check session complete is called");
+
     try {
       const session = event.data.object;
+
       const purchase = await CoursePurchase.findOne({
         paymentId: session.id,
       }).populate({ path: "courseId" });
+
       if (!purchase) {
         return res.status(404).json({ message: "Purchase not found" });
       }
@@ -99,11 +105,10 @@ export const stripeWebhook = async (req, res) => {
       }
 
       purchase.status = "completed";
-
       if (purchase.courseId && purchase.courseId.lectures.length > 0) {
         await Lecture.updateMany(
           { _id: { $in: purchase.courseId.lectures } },
-          { $set: { isPreviewFree: true } },
+          { $set: { isPreviewFree: true } }
         );
       }
 
@@ -111,20 +116,20 @@ export const stripeWebhook = async (req, res) => {
 
       await User.findByIdAndUpdate(
         purchase.userId,
-        { $addToSet: { enrolledCourses: purchase.courseId._id } },
-        { new: true },
+        { $addToSet: { enrolledCourses: purchase.courseId._id } }
       );
 
       await Course.findByIdAndUpdate(
         purchase.courseId._id,
-        { $addToSet: { enrolledStudents: purchase.userId } }, // Add user ID to enrolledStudents
-        { new: true },
+        { $addToSet: { enrolledStudents: purchase.userId } }
       );
+
     } catch (error) {
       console.error("Error handling event:", error);
       return res.status(500).json({ message: "Internal Server Error" });
     }
   }
+  return res.status(200).send();
 };
 
 export const getCourseDetailWithPurchaseStatus = async (req, res) => {

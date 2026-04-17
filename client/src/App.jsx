@@ -13,6 +13,8 @@ import AddCourse from "./pages/admin/courses/AddCourses";
 import EditCourse from "./pages/admin/courses/EditCourse";
 import CreateLecture from "./pages/admin/lectures/CreateLecture";
 import EditLecture from "./pages/admin/lectures/EditLecture";
+import CourseDetail from "./pages/students/CourseDetail";
+import CourseProgress from "./pages/students/CourseProgress";
 
 const appRouter = createBrowserRouter([
   {
@@ -39,6 +41,18 @@ const appRouter = createBrowserRouter([
       {
         path: "my-learning",
         element: <MyLearning />,
+      },
+      {
+        path: "course-detail/:courseId",
+        element: (
+            <CourseDetail />
+        ),
+      },
+      {
+        path: "course-progress/:courseId",
+        element: (
+            <CourseProgress />
+        ),
       },
       {
         path: "admin",
