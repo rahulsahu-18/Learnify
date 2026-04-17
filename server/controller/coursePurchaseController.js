@@ -154,4 +154,3 @@ export const getCourseDetailWithPurchaseStatus = async (req, res) => {
     console.log(error);
   }
 };
-
