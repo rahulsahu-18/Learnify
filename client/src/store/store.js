@@ -3,11 +3,12 @@ import rootReducers from "./rootReducers";
 import authApi from "./api/auth.api";
 import coursesApi from "./api/courses.api";
 import purchaseApi from "./api/purchaseApi";
+import courseProgressApi from "./api/courseProgressApi";
 
 const store = configureStore({
   reducer: rootReducers,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware,coursesApi.middleware,purchaseApi.middleware),
+    getDefaultMiddleware().concat(authApi.middleware,coursesApi.middleware,purchaseApi.middleware,courseProgressApi.middleware),
 });
 
 const initializeApp = async () => {

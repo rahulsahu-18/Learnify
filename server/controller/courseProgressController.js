@@ -39,7 +39,7 @@ export const getCourseProgress = async (req, res) => {
 
 export const updateLectureProgress = async (req, res) => {
   try {
-    const { lectureId, courseId } = req.body;
+    const { lectureId, courseId } = req.params;
     const userId = req.id;
 
     let courseProgress = await CourseProgress.findOne({ courseId, userId });
@@ -66,7 +66,7 @@ export const updateLectureProgress = async (req, res) => {
       (lecture) => lecture.viewed,
     ).length;
 
-    const course = await Course.findById(userId);
+    const course = await Course.findById(courseId);
     if (course.lectures.length === lectureprogressLength) {
       courseProgress.complited = true;
     }

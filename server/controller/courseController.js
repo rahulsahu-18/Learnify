@@ -321,3 +321,32 @@ export const removeLecture = async (req, res) => {
     });
   }
 };
+
+export const searchCourse = async (req, res) => {
+  const { query = "", sortByPrice = "" } = req.query;
+  try {
+    const searchCriteria = {
+      isPublished: true,
+      $or: [
+        { courseTitle: { $regex: query, $options: "i" } },
+        { subTitle: { $regex: query, $options: "i" } },
+        { category: { $regex: query, $options: "i" } },
+      ],
+    };
+    const searchOption = {};
+    if(sortByPrice === "high")
+    {
+      searchOption.coursePrice = -1;
+    }else if(sortByPrice === "low"){
+      searchOption.coursePrice = 1;
+    }
+
+    const courses = await Course.find(searchCriteria).populate({path:"creator",select:"name photoUrl"}).sort(searchOption);
+    res.status(200).json({
+      success:true,
+      courses: courses || []
+    });
+  } catch (error) {
+    console.log(error)
+  }
+};

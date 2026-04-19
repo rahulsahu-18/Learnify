@@ -92,6 +92,26 @@ const coursesApi = createApi({
         method: "GET",
       }),
     }),
+    getSearchCourse:builder.query({
+      query:({searchQuery, categories, sortByPrice})=>{
+        let queryString = `/search?query=${encodeURIComponent(searchQuery)}`
+        if(categories && categories.length > 0)
+        {
+          let querystr = categories.map(encodeURIComponent).join(',');
+          queryString += `$categories=${querystr}`;
+        }
+
+        if(sortByPrice)
+        {
+          queryString += `&sortByPrice=${encodeURIComponent(sortByPrice)}`;
+        }
+
+        return {
+          url:queryString,
+          method:'GET'
+        }
+      }
+    }),
   }),
 });
 
@@ -107,5 +127,6 @@ export const {
   useGetCourseLectureQuery,
   useRemoveLectureMutation,
   useGetLectureByIdQuery,
+  useGetSearchCourseQuery
 } = coursesApi;
 export default coursesApi;
